@@ -12,7 +12,8 @@ const rawJson = useStorage('json-prettify:raw-json', '{"hello": "world", "foo": 
 const indentSize = useStorage('json-prettify:indent-size', 3);
 const sortKeys = useStorage('json-prettify:sort-keys', true);
 const unescapeUnicode = useStorage('json-prettify:unescape-unicode', false);
-const cleanJson = computed(() => withDefaultOnError(() => formatJson({ rawJson, indentSize, sortKeys, unescapeUnicode }), ''));
+const jsonPath = ref('');
+const cleanJson = computed(() => withDefaultOnError(() => formatJson({ rawJson, indentSize, sortKeys, unescapeUnicode, jsonPath }), ''));
 
 const rawJsonValidation = useValidation({
   source: rawJson,
@@ -36,6 +37,22 @@ const rawJsonValidation = useValidation({
       </n-form-item>
       <n-form-item label="Indent size :" label-placement="left" label-width="100" :show-feedback="false">
         <n-input-number v-model:value="indentSize" min="0" max="10" style="width: 100px" />
+      </n-form-item>
+    </div>
+    <div style="margin: 0 auto; max-width: 600px" gap-3>
+      <n-form-item label="JSON Path :" label-placement="left" label-width="100">
+        <c-input-text
+          ref="inputElement"
+          v-model:value="jsonPath"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          multiline
+          rows="1"
+          monospace
+          placeholder="Put your JSON Path string here..."
+        />
       </n-form-item>
     </div>
   </div>
